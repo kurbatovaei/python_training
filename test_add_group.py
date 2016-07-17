@@ -7,7 +7,7 @@ from application import Application
 @pytest.fixture
 def app(request):
     fixture = Application()
-    request.addfinalazer(fixture.destroy)
+    request.addfinalizer(fixture.destroy)
     return fixture
 
 
