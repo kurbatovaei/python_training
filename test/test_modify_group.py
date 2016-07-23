@@ -1,3 +1,4 @@
+# test group modify cases from lesson_3
 from model.group import Group
 
 
