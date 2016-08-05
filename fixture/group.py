@@ -35,13 +35,19 @@ class GroupHelper:
         self.group_cache = None
 
     def select_first_group(self):
+        self.select_group_group_by_index(0)
+
+    def select_group_group_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def delete_first_group(self):
+        self.delete_group_by_index(0)
+
+    def delete_group_by_index(self, index):
         wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_group_by_index(index)
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
@@ -60,11 +66,14 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
-    # method from lesson_3 video 11_if.mp4
     def modify_first_group(self, new_group_data):
+        self.modify_group_by_index(0, new_group_data)
+
+    # method from lesson_3 video 11_if.mp4
+    def modify_group_by_index(self, index, new_group_data):
         wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # open modification form
         wd.find_element_by_name("edit").click()
         self.fill_group_form(new_group_data)

@@ -2,9 +2,9 @@ from model.contact import Contact
 
 
 def test_edit_first_contact(app):
-    old_contacts = app.contact.get_contact_list()
     if app.contact.count() == 0:
         app.contact.create(Contact(firstname="Ernest", lastname="Hemingway"))
+    old_contacts = app.contact.get_contact_list()
     contact = Contact(firstname="Vladimir", lastname="Putin", address="Russian Federation, Moscow, Kremlin",
                       home_phone="+7 495 697-03-49", mobile_phone="+7 495 697-03-49", work_phone="+7 495 697-03-49",
                       email="mr.president@kremlin.ru")
