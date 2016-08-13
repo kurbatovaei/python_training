@@ -4,7 +4,9 @@
       <w>barack</w>
       <w>firstname</w>
       <w>lastname</w>
+      <w>maxlen</w>
       <w>obama</w>
+      <w>testdata</w>
     </words>
   </dictionary>
 </component>
