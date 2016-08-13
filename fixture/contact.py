@@ -27,7 +27,11 @@ class ContactHelper:
         self.change_field_value("home", contact.home_phone)
         self.change_field_value("mobile", contact.mobile_phone)
         self.change_field_value("work", contact.work_phone)
-        self.change_field_value("email", contact.email)
+        self.change_field_value("fax", contact.fax)
+        self.change_field_value("email", contact.email1)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
+        self.change_field_value("homepage", contact.homepage)
 
     def create(self, contact):
         wd = self.app.wd
@@ -103,14 +107,14 @@ class ContactHelper:
             for element in wd.find_elements_by_name("entry"):
                 lastname = element.find_element_by_css_selector("td:nth-child(2)").text
                 firstname = element.find_element_by_css_selector("td:nth-child(3)").text
-                id = element.find_element_by_name("selected[]").get_attribute("value")
-                # all_phones = element.find_element_by_css_selector("td:nth-child(6)").text.splitlines()
-                # self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
-                #                                   home_phone=all_phones[0], mobile_phone=all_phones[1],
-                #                                   work_phone=all_phones[2])
+                address = element.find_element_by_css_selector("td:nth-child(4)").text
+                all_emails = element.find_element_by_css_selector("td:nth-child(5)").text
                 all_phones = element.find_element_by_css_selector("td:nth-child(6)").text
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
-                                                  all_phones_from_home_page=all_phones))
+                homepage = element.find_element_by_css_selector("td:nth-child(10)").text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, address=address,
+                                                  all_emails_from_home_page=all_emails, all_phones_from_home_page=all_phones,
+                                                  homepage=homepage, id=id))
         return self.contact_cache
 
     def get_contact_from_edit_page(self, index):
@@ -118,12 +122,18 @@ class ContactHelper:
         self.open_contact_to_edit_by_index(index)
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
-        id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
         home_phone = wd.find_element_by_name("home").get_attribute("value")
         mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
         work_phone = wd.find_element_by_name("work").get_attribute("value")
-        return Contact(firstname=firstname, lastname=lastname, id=id, home_phone=home_phone, mobile_phone=mobile_phone,
-                       work_phone=work_phone)
+        email1 = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        homepage = wd.find_element_by_name("homepage").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        return Contact(firstname=firstname, lastname=lastname, address=address, home_phone=home_phone,
+                       mobile_phone=mobile_phone, work_phone=work_phone, email1=email1, email2=email2, email3=email3,
+                       homepage=homepage, id=id)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
@@ -133,3 +143,22 @@ class ContactHelper:
         mobile_phone = re.search("M: (.*)", text).group(1)
         work_phone = re.search("W: (.*)", text).group(1)
         return Contact(home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone)
+
+    def clear(self, s):
+        wd = self.app.wd
+        return re.sub("[() -]", "", s)
+
+    def merge_phones_like_on_home_page(self, contact):
+        wd = self.app.wd
+        return "\n".join(filter(lambda x: x != "",
+                                map(lambda x: self.clear(x),
+                                    filter(lambda x: x is not None,
+                                           [contact.home_phone, contact.mobile_phone, contact.work_phone,
+                                            contact.fax]))))
+
+    def merge_emails_like_on_home_page(self, contact):
+        wd = self.app.wd
+        return "\n".join(filter(lambda x: x != "",
+                                map(lambda x: self.clear(x),
+                                    filter(lambda x: x is not None,
+                                           [contact.email1, contact.email2, contact.email3]))))

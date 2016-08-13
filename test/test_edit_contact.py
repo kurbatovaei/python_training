@@ -9,7 +9,7 @@ def test_edit_contact(app):
     index = randrange(len(old_contacts))
     contact = Contact(firstname="Vladimir", lastname="Putin", address="Russian Federation, Moscow, Kremlin",
                       home_phone="+7 495 697-03-49", mobile_phone="+7 495 697-03-49", work_phone="+7 495 697-03-49",
-                      email="mr.president@kremlin.ru")
+                      email1="mr.president@kremlin.ru")
     app.contact.edit_contact_by_index(index, contact)
     contact.id = old_contacts[index].id
     assert len(old_contacts) == app.contact.count()
