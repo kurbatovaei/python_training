@@ -149,7 +149,6 @@ class ContactHelper:
         return re.sub("[() -]", "", s)
 
     def merge_phones_like_on_home_page(self, contact):
-        wd = self.app.wd
         return "\n".join(filter(lambda x: x != "",
                                 map(lambda x: self.clear(x),
                                     filter(lambda x: x is not None,
@@ -157,7 +156,6 @@ class ContactHelper:
                                             contact.fax]))))
 
     def merge_emails_like_on_home_page(self, contact):
-        wd = self.app.wd
         return "\n".join(filter(lambda x: x != "",
                                 map(lambda x: self.clear(x),
                                     filter(lambda x: x is not None,
