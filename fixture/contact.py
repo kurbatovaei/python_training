@@ -113,8 +113,8 @@ class ContactHelper:
                 homepage = element.find_element_by_css_selector("td:nth-child(10)").text
                 id = element.find_element_by_name("selected[]").get_attribute("value")
                 self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, address=address,
-                                                  all_emails_from_home_page=all_emails, all_phones_from_home_page=all_phones,
-                                                  homepage=homepage, id=id))
+                                                  all_emails_from_home_page=all_emails,
+                                                  all_phones_from_home_page=all_phones, homepage=homepage, id=id))
         return self.contact_cache
 
     def get_contact_from_edit_page(self, index):
