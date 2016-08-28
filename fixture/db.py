@@ -25,6 +25,11 @@ class DbFixture:
             cursor.close()
         return list
 
+    def get_group_list_clean(self):
+        def clean(group):
+            return Group(id=group.id, name=group.name.strip())
+        return map(clean, self.get_group_list())
+
     def get_contact_list(self, app):
         list = []
         cursor = self.connection.cursor()
@@ -43,6 +48,14 @@ class DbFixture:
         finally:
             cursor.close()
         return list
+
+    def get_contact_list_clean(self, app):
+        def clean(contact):
+            return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip(),
+                           address=contact.address.strip(), homepage=contact.homepage.strip(),
+                           all_emails_from_home_page=contact.all_emails_from_home_page.strip(),
+                           all_phones_from_home_page=contact.all_phones_from_home_page.strip())
+        return map(clean, self.get_contact_list(app))
 
     def destroy(self):
         self.connection.close()
