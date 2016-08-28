@@ -2,6 +2,7 @@
 import pymysql.cursors
 from fixture.db import DbFixture
 from fixture.orm import ORMFixture
+from model.group import Group
 
 # # connection = mysql.connector.connect(host="127.0.0.1", database="addressbook", user="root", password="")
 # connection = pymysql.connect(host="127.0.0.1", database="addressbook", user="root", password="")
@@ -26,12 +27,24 @@ from fixture.orm import ORMFixture
 # finally:
 #     db.destroy()
 
+# # -----------------
+#
+# db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
+#
+# try:
+#     l = db.get_contact_list()
+#     for item in l:
+#         print(item)
+#     print(len(l))
+# finally:
+#     pass
+
 # -----------------
 
 db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 
 try:
-    l = db.get_contact_list()
+    l = db.get_contacts_not_in_group(Group(id=327))
     for item in l:
         print(item)
     print(len(l))
