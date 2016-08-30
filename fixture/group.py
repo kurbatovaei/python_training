@@ -131,3 +131,15 @@ class GroupHelper:
                 id = element.find_element_by_name("selected[]").get_attribute("value")
                 self.group_cache.append(Group(name=text, id=id))
         return list(self.group_cache)
+
+    def add_to_group(self, group):
+        wd = self.app.wd
+        to_group = wd.find_element_by_name("to_group")
+        to_group.find_element_by_css_selector("option[value='%s']" % group.id).click()
+        wd.find_element_by_name("add").click()
+        assert ("group page \"" + group.name + "\"") == wd.find_element_by_xpath("//div/div[4]/div/i/a").text
+
+    def select_group_on_homepage_by_id(self, id):
+        wd = self.app.wd
+        select_group = wd.find_element_by_name("group")
+        select_group.find_element_by_css_selector("option[value='%s']" % id).click()

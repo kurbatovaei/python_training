@@ -103,7 +103,7 @@ class ContactHelper:
         self.open_home_page()
         self.select_contact_by_index(index)
         # submit deletion
-        #wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        # wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.find_element_by_xpath("//div/div[4]/form[2]/div[2]/input").click()
         # confirm deletion alert
         wd.switch_to_alert().accept()
@@ -188,3 +188,18 @@ class ContactHelper:
                                 map(lambda x: self.clear(x),
                                     filter(lambda x: x is not None,
                                            [contact.email1, contact.email2, contact.email3]))))
+
+    def add_contact_to_group(self, app, contact, group):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(contact.id)
+        app.group.add_to_group(group)
+
+    def remove_contact_from_group(self, app, contact, group):
+        wd = self.app.wd
+        self.open_home_page()
+        app.group.select_group_on_homepage_by_id(group.id)
+        self.select_contact_by_id(contact.id)
+        wd.find_element_by_name("remove").click()
+        assert ("group page \"" + group.name + "\"") == wd.find_element_by_xpath("//div/div[4]/div/i/a").text
+        wd.find_element_by_xpath("//div/div[4]/div/i/a").click()
